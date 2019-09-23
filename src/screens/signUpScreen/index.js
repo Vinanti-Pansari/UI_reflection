@@ -54,13 +54,14 @@ class SignUpScreen extends Component {
     handleSignUp = () => {
         const {userName, address, code, mobileNumber, email, password } = this.state;
         Keyboard.dismiss();
+        console.log('userName', userName)
         const validationError =
-            validate('checkEmpty', {userName: userName.trim()}) ||
-            validate('checkEmpty', {code: code.trim()}) ||
-            validate('checkEmpty', {mobileNumber: mobileNumber}) ||
-            validate('email', {email: email.trim()}) ||
-            validate('password', { password: password.trim()}) ||
-            validate('checkEmpty', {address: address.trim()});
+            validate('checkEmpty',  userName.trim());
+            // validate('checkEmpty', {code: code.trim()}) ||
+            // validate('checkEmpty', {mobileNumber: mobileNumber}) ||
+            // validate('email', {email: email.trim()}) ||
+            // validate('password', { password: password.trim()}) ||
+            // validate('checkEmpty', {address: address.trim()});
         if (validationError) {
             alert(validationError);
         } else {

@@ -29,6 +29,10 @@ const styles = StyleSheet.create({
         marginRight: 8,
         alignSelf: 'flex-end',
     },
+    menuStyle: {
+        height: 22,
+        width: 22
+    },
     inputStyle: {
         width: '80%',
         height: 50,
