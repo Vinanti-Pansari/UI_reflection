@@ -58,6 +58,13 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontFamily: Fonts.SUB_HEADING_FONT
     },
+    signUpText:{
+        paddingTop: 5,
+        fontSize: 15,
+        textAlign: 'center',
+        color: '#000',
+        fontFamily: Fonts.SUB_HEADING_FONT
+    },
     triangleCorner: {
         alignSelf: 'flex-end',
         width: 0,

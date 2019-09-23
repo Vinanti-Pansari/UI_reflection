@@ -24,7 +24,6 @@ const styles = StyleSheet.create({
     profileBlock:{
         height: screenHeight * 0.58,
         width: screenWidth * 0.85,
-
         backgroundColor: Colors.PROFILE_BACKGROUND_COLOR,
         borderRadius: 10,
         alignSelf: 'center'
@@ -38,7 +37,7 @@ const styles = StyleSheet.create({
         height: screenHeight * 0.18,
         width: screenHeight * 0.18,
         borderRadius: (screenHeight * 0.18)/2,
-        backgroundColor: 'blue'
+        backgroundColor: '#ccc'
     },
     nameTitleStyle:{
         textAlign: 'center',

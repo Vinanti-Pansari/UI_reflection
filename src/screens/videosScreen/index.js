@@ -1,25 +1,15 @@
 import React, { Component } from 'react';
-import {View, FlatList, Text } from 'react-native';
+import { FlatList } from 'react-native';
 import Container from '../../component/Container';
-import Config from '../../utility/config';
 import { fetchVideoList } from '../../modules/fetchVideoList';
-// import DataOptions from '../../utility/dataOptions';
 import VideosList from './videosList';
-// import Container from '../../components/MainContainer';
-// import ProductDetailsScreen from "../productdetailsScreen";
-// import { navigateToScreen } from '../../utility/handleNavigation';
-// import Colors from '../../utility/colorConstant';
- import { connect } from "react-redux";
-// import { productList } from '../../modules/productList';
-// import Style from './style';
-// import fetchProductList from "../../graphQlQuries/fetchProductList";
-// import { checkNullData } from '../../utility/helper'
+import { connect } from "react-redux";
 import { ListFooterComponentSpinner } from '../../utility/dynamicStyle';
+import PropTypes from "prop-types";
 
 
 
-class HomeScreen extends Component {
-
+class VideoScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -37,31 +27,26 @@ class HomeScreen extends Component {
     }
 
 
-    componentDidUpdate(prevProps) {
-        console.log('fetchVideoList', prevProps)
-        const { videoListPayload } = this.props;
-        console.log('videoListPayload', videoListPayload)
-        if(videoListPayload !== prevProps.videoListPayload){
-            this.setState({
-                videoList: videoListPayload
-            })
-        }
-    }
-
     /**
      * Method to get the list of videos
      */
     fetchVideoList = () => {
         const { dispatch } = this.props;
+        const { videoList } = this.state;
+        const dataPayload = videoList;
         dispatch(fetchVideoList())
-
+            .then(res =>{
+                this.setState({
+                    paginationSpinner: false,
+                    videoList: dataPayload.concat(res)
+                })
+            })
     };
 
-    updateValue = () => {
-        console.log('updateValue');
-    };
-
-
+    /**
+     * Method to handle the scroll of the list
+     * @private
+     */
     _scrolled = () => {
         this.setState({
             onEndReachedPage: 0.5,
@@ -69,25 +54,27 @@ class HomeScreen extends Component {
         });
     };
 
+    /**
+     * Method to handle the end reached on list view
+     */
     handleEndReached = () => {
         const { flatListReady, onEndReachedPage } = this.state;
         if (flatListReady && onEndReachedPage !== 0) {
             this.setState(
                 { paginationSpinner: true },
-                () => this.increaseSkipNumber()
+                () =>  this.fetchVideoList()
             );
         }
     };
 
 
-
     render() {
-        const { videoList , onEndReachedPage } = this.state;
+        const { videoList , onEndReachedPage, paginationSpinner } = this.state;
         const { fetching } = this.props;
-        console.log('videoList', videoList);
         return (
             <Container
-                fetching = {fetching}
+                fetching = {!paginationSpinner && fetching}
+                screen={'videos'}
             >
                 <FlatList
                     showsVerticalScrollIndicator={false}
@@ -101,6 +88,7 @@ class HomeScreen extends Component {
                             />
                     }
                     ListFooterComponent={
+                        paginationSpinner &&
                         ListFooterComponentSpinner
                     }
                     onEndReachedThreshold={onEndReachedPage}
@@ -113,13 +101,17 @@ class HomeScreen extends Component {
     }
 }
 
-HomeScreen.propTypes = {
-    // Props Validation
+VideoScreen.propTypes = {
+    dispatch: PropTypes.object,
+    fetching: PropTypes.bool,
 };
-
+VideoScreen.defaultProps = {
+    dispatch: {},
+    fetching: false,
+};
 const mapStateToProps = state => ({
     videoListPayload: state.fetchVideoList.videoListPayload,
     fetching: state.fetchVideoList.fetching,
 });
 
-export default connect(mapStateToProps)(HomeScreen);
+export default connect(mapStateToProps)(VideoScreen);

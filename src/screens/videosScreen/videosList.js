@@ -1,6 +1,6 @@
 import React from 'react';
 import VideoPlayer from 'react-native-video-player';
-import {  Text, Image, TouchableOpacity, View, Dimensions } from 'react-native';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import Style from './styles';
 
@@ -11,16 +11,13 @@ const videoList = (props) => {
         data: {
             item:{
                 thumbnail_url,
-                title,
                 video_url
             }
         },
     } = props;
 
-    console.log('data', data, '\n', 'thumbnail_url', thumbnail_url);
-
     return (
-        <View style = {Style.videoBackgroundView}>
+        <View style = {[Style.videoBackgroundView, Style.boxShadowStyle]}>
             <VideoPlayer
                 endWithThumbnail
                 thumbnail={{ uri: thumbnail_url }}

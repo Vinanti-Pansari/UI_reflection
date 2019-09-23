@@ -1,8 +1,6 @@
 import Axios from 'axios';
-//import { fetchErrorMessage } from '../utility/helperComponent';
 import Config from '../utility/config';
 import ActionType from '../utility/actionTypes';
-//import Constant from '../utility/constants';
 
 export function fetchVideoList() {
     return (dispatch) => new Promise((resolve, reject) => {
@@ -19,6 +17,7 @@ export function fetchVideoList() {
                             videoListPayload: response.data.videos,
                             type: ActionType.GET_VIDEO_LIST_SUCCESS
                         });
+                        resolve(response.data.videos)
                 })
                 .catch((error) => {
                     console.log('error', error);
@@ -27,7 +26,6 @@ export function fetchVideoList() {
                         videoListPayload: null,
                         type: ActionType.GET_VIDEO_LIST_ERROR
                     });
-                  //  reject(error);
                 });
         });
 }

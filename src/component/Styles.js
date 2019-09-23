@@ -17,31 +17,11 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0
     },
-    mainContainerViewStyle: {
-        flex: 1,
-        alignItems: 'center'
-    },
-    menuContainer: {
-        marginLeft: 15,
-        width: 70,
-        height: '100%',
-        justifyContent: 'center'
-    },
     backButtonContainer: {
         marginLeft: 10,
         width: screenWidth * 0.1,
         height: '100%',
         justifyContent: 'center',
-    },
-    rightHeaderIconView: {
-        marginRight: 10,
-        width: 70,
-        height: '100%',
-        justifyContent: 'center'
-    },
-    menuStyle: {
-        height: 22,
-        width: 22
     },
     headerRightIcon: {
         height: 28,
@@ -248,8 +228,6 @@ const styles = StyleSheet.create({
     },
     headerStyle: {
         backgroundColor: 'transparent',
-        borderBottomWidth: 1,
-        borderBottomColor: 'transparent'
     },
     headerTitleStyle: {
         textAlign: 'center',
@@ -260,9 +238,7 @@ const styles = StyleSheet.create({
         fontSize: 20
     },
     profileHeaderStyle:{
-        backgroundColor: Colors.THEME_COLOR,
-        borderBottomWidth: 1,
-        borderBottomColor: 'transparent'
+        backgroundColor: Colors.THEME_COLOR
     },
     profileHeaderTitleStyle: {
         textAlign: 'center',
@@ -271,8 +247,7 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontFamily: Fonts.HEADING_FONT,
         fontSize: 20
-    },
-
+    }
 });
 
 export default styles;

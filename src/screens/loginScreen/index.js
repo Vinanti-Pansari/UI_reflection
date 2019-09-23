@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import AsyncStorage from '@react-native-community/async-storage';
 import {
     View,
     TouchableOpacity,
     Image,
-    Text
+    Text,
+    Keyboard
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {connect} from 'react-redux';
@@ -13,12 +15,10 @@ import Styles from './styles';
 import Container from '../../component/Container';
 import Icons from '../../utility/icons';
 import PlaceHolder from '../../utility/placeHolder';
-// import {errorHandler} from '../../modules/errorHandler';
-// import {validate} from '../../utility/validator';
-// import { navigateToScreen, resetStack } from '../../utility/handleNavigation';
-// import { signIn } from '../../modules/signIn';
-// import { checkNullData } from '../../utility/helper';
-// import Constant from '../../utility/constant';
+import { signIn } from '../../modules/signIn';
+import { validate } from '../../utility/validator';
+import { navigateToScreen, resetStack } from '../../utility/handleNavigation';
+import Constant from '../../utility/constant';
 
 
 class LoginScreen extends Component {
@@ -37,19 +37,15 @@ class LoginScreen extends Component {
     });
 
     componentDidUpdate(prevProps) {
-        // const {
-        //     signInPayload,
-        //     userProfile,
-        //     navigation: {dispatch}
-        // } = this.props;
-        // console.log(signInPayload, userProfile );
-        // if (!checkNullData(signInPayload) && !checkNullData(userProfile)) {
-        //     AsyncStorage.setItem(Constant.ASYNC_KEYS.USER_EMAIL, userProfile.email);
-        //     AsyncStorage.setItem(Constant.ASYNC_KEYS.USER_ID, userProfile.id);
-        //     resetStack('TabNavigator')
-        // }
+        const {
+            signInPayload,
+        } = this.props;
+        console.log('signInPayload', signInPayload);
+        if (signInPayload !== null) {
+            AsyncStorage.setItem(Constant.ASYNC_KEYS.USER_EMAIL, signInPayload);
+            resetStack('TabNavigator')
+        }
     }
-
     /**
      * Method to handle the text entry.
      * @param text
@@ -65,25 +61,22 @@ class LoginScreen extends Component {
     /**apt_unit
      * Function to preform the login
      */
-
-
     handleLogin = () => {
-        // const {email, password} = this.state;
-        // const {dispatch} = this.props;
-        // Keyboard.dismiss();
-        // const validationError =
-        //     validate('email', {email: email.trim()}) ||
-        //     validate('password', { password: password.trim()});
-        // if (validationError) {
-        //     dispatch(errorHandler(validationError));
-        // } else {
-        //     // resetStack('TabNavigator');
-        //     let data = {
-        //         password: password.trim(),
-        //         email: email.trim(),
-        //     };
-        //     dispatch(signIn(data))
-        // }
+        const {email, password} = this.state;
+        const {dispatch} = this.props;
+        Keyboard.dismiss();
+        const validationError =
+            validate('email', {email: email.trim()}) ||
+            validate('password', { password: password.trim()});
+        if (validationError) {
+            alert(validationError);
+        } else {
+            let data = {
+                email,
+                password
+            };
+            dispatch(signIn(data));
+        }
     };
 
 
@@ -124,7 +117,7 @@ class LoginScreen extends Component {
                             <Input
                                 placeholder={PlaceHolder.USERNAME}
                                 value={email}
-                                inputRef={el => this.email = el}
+                                keyboardType="email-address"
                                 returnKeyType={'next'}
                                 onChangeText={(text) => this.handleTextChange(text, 'email')}
                             />
@@ -133,7 +126,6 @@ class LoginScreen extends Component {
                                     showPassword={showPassword}
                                     placeholder={PlaceHolder.PASSWORD}
                                     value={password}
-                                    inputRef={el => this.password = el}
                                     onSubmitEditing={this.handleLogin}
                                     onChangeText={(text) => this.handleTextChange(text, 'password')}
                                 />
@@ -153,10 +145,15 @@ class LoginScreen extends Component {
                         </View>
                         <View style={Styles.rowAlign}>
                             <Text style={Styles.linkText}>Forgot password?</Text>
-                            <View style={Styles.buttonView}>
+                            <TouchableOpacity
+                                onPress={this.handleLogin}
+                                style={Styles.buttonView}>
                                 <Text style={Styles.buttonText}>Login</Text>
-                            </View>
+                            </TouchableOpacity>
                         </View>
+                            <Text
+                                onPress={() => navigateToScreen('SignUp')}
+                                style={Styles.signUpText}>SignUp</Text>
                     </KeyboardAwareScrollView>
                 </View>
             </Container>
@@ -174,8 +171,7 @@ LoginScreen.defaultProps = {
     fetching: false,
 };
 const mapStateToProps = state => ({
-    // fetching: state.signIn.fetching,
-    // signInPayload: state.signIn.signInPayload,
-    // userProfile: state.fetchUserProfile.userProfile
+    fetching: state.signIn.fetching,
+    signInPayload: state.signIn.signInPayload,
 });
 export default connect(mapStateToProps)(LoginScreen);

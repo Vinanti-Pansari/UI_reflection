@@ -5,7 +5,8 @@ import {
     TouchableOpacity,
     Image,
     Text,
-    TextInput
+    TextInput,
+    Keyboard
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {connect} from 'react-redux';
@@ -14,12 +15,7 @@ import Styles from './styles';
 import Container from '../../component/Container';
 import Icons from '../../utility/icons';
 import PlaceHolder from '../../utility/placeHolder';
-// import {errorHandler} from '../../modules/errorHandler';
-// import {validate} from '../../utility/validator';
-// import { navigateToScreen, resetStack } from '../../utility/handleNavigation';
-// import { signIn } from '../../modules/signIn';
-// import { checkNullData } from '../../utility/helper';
-// import Constant from '../../utility/constant';
+import {validate} from "../../utility/validator";
 
 
 class SignUpScreen extends Component {
@@ -36,20 +32,6 @@ class SignUpScreen extends Component {
             referralCode: ''
         };
 
-    }
-
-    componentDidUpdate(prevProps) {
-        // const {
-        //     signInPayload,
-        //     userProfile,
-        //     navigation: {dispatch}
-        // } = this.props;
-        // console.log(signInPayload, userProfile );
-        // if (!checkNullData(signInPayload) && !checkNullData(userProfile)) {
-        //     AsyncStorage.setItem(Constant.ASYNC_KEYS.USER_EMAIL, userProfile.email);
-        //     AsyncStorage.setItem(Constant.ASYNC_KEYS.USER_ID, userProfile.id);
-        //     resetStack('TabNavigator')
-        // }
     }
 
     /**
@@ -69,23 +51,21 @@ class SignUpScreen extends Component {
      */
 
 
-    handleLogin = () => {
-        // const {email, password} = this.state;
-        // const {dispatch} = this.props;
-        // Keyboard.dismiss();
-        // const validationError =
-        //     validate('email', {email: email.trim()}) ||
-        //     validate('password', { password: password.trim()});
-        // if (validationError) {
-        //     dispatch(errorHandler(validationError));
-        // } else {
-        //     // resetStack('TabNavigator');
-        //     let data = {
-        //         password: password.trim(),
-        //         email: email.trim(),
-        //     };
-        //     dispatch(signIn(data))
-        // }
+    handleSignUp = () => {
+        const {userName, address, code, mobileNumber, email, password } = this.state;
+        Keyboard.dismiss();
+        const validationError =
+            validate('checkEmpty', {userName: userName.trim()}) ||
+            validate('checkEmpty', {code: code.trim()}) ||
+            validate('checkEmpty', {mobileNumber: mobileNumber}) ||
+            validate('email', {email: email.trim()}) ||
+            validate('password', { password: password.trim()}) ||
+            validate('checkEmpty', {address: address.trim()});
+        if (validationError) {
+            alert(validationError);
+        } else {
+
+        }
     };
 
 
@@ -117,6 +97,7 @@ class SignUpScreen extends Component {
                             <Input
                                 placeholder={PlaceHolder.USERNAME}
                                 value={userName}
+                                keyboardType="email-address"
                                 returnKeyType={'next'}
                                 onChangeText={(text) => this.handleTextChange(text, 'userName')}
                             />
@@ -125,6 +106,7 @@ class SignUpScreen extends Component {
                                     style={Styles.mobileCodeView}
                                     placeholder={PlaceHolder.CODE}
                                     value={code}
+                                    keyboardType='numeric'
                                     returnKeyType={'next'}
                                     onChangeText={(text) => this.handleTextChange(text, 'code')}
                                 />
@@ -132,6 +114,7 @@ class SignUpScreen extends Component {
                                     style={Styles.mobileNumberView}
                                     placeholder={PlaceHolder.MOBILE_NUMBER}
                                     value={mobileNumber}
+                                    keyboardType='numeric'
                                     returnKeyType={'next'}
                                     onChangeText={(text) => this.handleTextChange(text, 'mobileNumber')}
                                 />
@@ -139,6 +122,7 @@ class SignUpScreen extends Component {
                             <Input
                                 placeholder={PlaceHolder.EMAIL}
                                 value={email}
+                                keyboardType="email-address"
                                 returnKeyType={'next'}
                                 onChangeText={(text) => this.handleTextChange(text, 'email')}
                             />
@@ -147,6 +131,7 @@ class SignUpScreen extends Component {
                                     showPassword={showPassword}
                                     placeholder={PlaceHolder.PASSWORD}
                                     value={password}
+                                    keyboardType="email-address"
                                     inputRef={el => this.password = el}
                                     onSubmitEditing={this.handleLogin}
                                     onChangeText={(text) => this.handleTextChange(text, 'password')}
@@ -167,6 +152,7 @@ class SignUpScreen extends Component {
                             <Input
                                 placeholder={PlaceHolder.ADDRESS}
                                 value={address}
+                                keyboardType="email-address"
                                 multiline={true
                                 }
                                 inputRef={el => this.email = el}
@@ -178,23 +164,23 @@ class SignUpScreen extends Component {
                                     style={Styles.inputStyle}
                                     autoCorrect={false}
                                     autoCapitalize="none"
-                                    // placeholderTextColor={Color.PLACEHOLDER_COLOR}
                                     blurOnSubmit={false}
-                                    // ref={props.inputRef}
                                     returnKeyType="next"
                                     placeholder={PlaceHolder.EMAIL}
                                     keyboardType="email-address"
-                                    value={email}
+                                    value={referralCode}
                                     onSubmitEditing={() => this.password.focus()}
                                     onChangeText={(text) => this.handleTextChange(text, 'referralCode')}
                                 />
                                 <Text style={Styles.applyText}>Apply</Text>
                             </View>
-                            <View style={Styles.buttonView}>
+                            <TouchableOpacity
+                                onPress={this.handleSignUp}
+                                style={Styles.buttonView}>
                                 <Text style={Styles.buttonText}>Signup</Text>
                                 <Text style={Styles.buttonText}>|</Text>
                                 <Text style={Styles.buttonText}>f</Text>
-                            </View>
+                            </TouchableOpacity>
                         </View>
                     </KeyboardAwareScrollView>
                 </View>
@@ -213,8 +199,5 @@ SignUpScreen.defaultProps = {
     fetching: false,
 };
 const mapStateToProps = state => ({
-    // fetching: state.signIn.fetching,
-    // signInPayload: state.signIn.signInPayload,
-    // userProfile: state.fetchUserProfile.userProfile
 });
 export default connect(mapStateToProps)(SignUpScreen);

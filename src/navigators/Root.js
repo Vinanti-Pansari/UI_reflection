@@ -9,36 +9,12 @@ import {
     createReactNavigationReduxMiddleware,
 } from 'react-navigation-redux-helpers';
 import VideoScreen from '../screens/videosScreen/index'
-// import {checkUndefinedValues} from "../utility/helper";
 import Icons from '../utility/icons';
- import Styles from '../component/Styles';
-// import TabBarComponent from '../components/TabBarComponent';
+import Styles from '../component/Styles';
 import LoginScreen from '../screens/loginScreen/index';
 import SignUpScreen from '../screens/signUpScreen/index';
 import ProfileScreen from '../screens/profileScreen/index';
-// import HomeScreen from '../screens/homeScreen/index';
-// import AccountScreen from '../screens/accountScreen/index';
-// import SearchScreen from '../screens/searchScreen/index';
-// import ShoppingCartScreen from '../screens/shoppingcartScreen/index';
-// import SettingScreen from '../screens/settingScreen/index';
-// import Fonts from '../utility/fonts';
-// import ForgotPasswordScreen from '../screens/forgotpasswordScreen/index'
-// import ResetPassword from '../screens/resetPasswordScreen/index'
-// import ProductDetailsScreen from '../screens/productdetailsScreen/index'
-// import AddressBookScreen from '../screens/addressbookScreen/index'
-// import ChangePasswordScreen from '../screens/changepasswordScreen/index'
-// import ShippingAddressScreen from '../screens/shippingaddressScreen/index'
-// import AddAddressScreen from '../screens/addnewaddressScreen/index'
-// import ShippingMethodScreen from '../screens/shippingmethodScreen'
-// import InboxScreen from '../screens/inboxScreen/index';
-// import MessageScreen from '../screens/messageScreen/index'
-// //import Icon from 'react-native-vector-icons/Ionicons';
-// import Colors from '../utility/colorConstant';
-// import { eventHandler } from "../modules/eventHandler";
-// import { navigateToScreen } from "../utility/handleNavigation";
-// import OrderHistoryScreen from "../screens/orderHistoryScreen/index";
-// import SplashScreen from '../components/splash';
-// import Color from '../utility/colorConstant';
+import SplashScreen from '../component/Splash'
 
 
 const navOptions = {
@@ -66,10 +42,22 @@ const navigationOptions = ({navigation}, title) => ({
 
 });
 
+const tabNavigationOptions = ({navigation}, title) => ({
+    title,
+    headerLeft:<Text/>,
+    headerRight:
+        <Text
+        />,
+    ...navOptions,
+
+});
+
 const ProfileNavigationOption= ({navigation}, title) => ({
     title,
     headerLeft:<Text/>,
-    headerRight:<TouchableOpacity>
+    headerRight:<TouchableOpacity
+     onPress={() => navigation.state.params.logOutPressed()}
+    >
         <Image
             source={Icons.LOGOUT}
             style={Styles.headerRightIcon}
@@ -84,7 +72,7 @@ const ProfileNavigationOption= ({navigation}, title) => ({
 const Video = createStackNavigator({
     VideoScreen: {
         screen: VideoScreen,
-        navigationOptions: ({navigation}) => navigationOptions({navigation}, 'Video')
+        navigationOptions: ({navigation}) => tabNavigationOptions({navigation}, 'Video')
     }
 });
 
@@ -106,7 +94,8 @@ const Profile= createStackNavigator({
  * Tab navigation stack.
  */
 const TabNavigator = createBottomTabNavigator({
-    VideoScreen: {screen: Video}
+    VideoScreen: {screen: Video},
+    Profile: {screen: Profile},
 }, {
     tabBarOptions: {
         showLabel: true,
@@ -119,7 +108,6 @@ const TabNavigator = createBottomTabNavigator({
     lazy: false,
     showLabel: true,
     showIcon: true,
-    // tabBarComponent: TabBarComponent,
     navigationOptions: {
         header: null
     }
@@ -130,33 +118,16 @@ const TabNavigator = createBottomTabNavigator({
  * Root stack for all the screens.
  */
 const AppNavigator = createStackNavigator({
+    SplashScreen,
     LoginScreen,
-    Profile: {screen: Profile},
     SignUp: {screen: SignUp},
     TabNavigator
-    // SplashScreen,
-    // ,
-    // TabNavigator,
-    // Inbox: {screen: Inbox},
-    // Message: {screen: Message},
-    // ShippingMethod: {screen: ShippingMethod},
-    // Products: {screen: Products},
-    // ShippingAddress: {screen: ShippingAddress},
-    // NewAddress: {screen: NewAddress},
-    // AddressBook: {screen: AddressBook},
-    // OderHistory: {screen: OderHistory},
-    // AccountScreen,
-    // ForgotPasswordScreen,
-    // ResetPassword,
-    // ChangePasswordScreen,
-
 }, {
     headerMode: 'none',
     headerBackTitle: null,
     defaultNavigationOptions: {
         headerTintColor: '#fff',
         headerStyle: {
-            //backgroundColor: Colors.DEFAULT_HEADER_COLOR,
             backgroundColor: '#ccc',
         },
     },

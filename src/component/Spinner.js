@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ActivityIndicator } from 'react-native';
 import styles from './Styles';
-//import Colors from '../utility/colorConstant';
+
 
 /* Activity Loader component for iOS and android */
 export default class Spinner extends Component {
@@ -13,7 +13,6 @@ export default class Spinner extends Component {
                     animating={this.props.animating}
                     style={styles.spinnerStyle}
                     size="large"
-                    //color={ Colors.HEADER_COLOR}
                     color={'green'}
                 />
             )
@@ -22,6 +21,5 @@ export default class Spinner extends Component {
 }
 
 Spinner.propTypes = {
-    animating: PropTypes.bool.isRequired,
-    color: PropTypes.string.isRequired
+    animating: PropTypes.bool.isRequired
 };

@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
 import { BackHandler } from 'react-native';
-//import NetInfo from "@react-native-community/netinfo";
 import PropTypes from 'prop-types';
-import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import { Root } from './Root';
-// import { checkNetwork } from '../modules/checkNetwork';
-// import { checkUndefinedValues } from '../utility/helper';
-// import { authorization } from '../modules/authorization';
+import { authorization } from '../modules/authorization';
 
 export let navigationDispatchService;
 
@@ -16,6 +12,7 @@ class AppNavigator extends Component {
         console.log('enter');
         const { dispatch } = this.props;
         this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
+        dispatch(authorization());
         navigationDispatchService = dispatch;
     }
 

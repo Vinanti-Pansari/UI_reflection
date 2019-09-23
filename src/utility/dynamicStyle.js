@@ -16,16 +16,18 @@ export function ListFooterComponentSpinner() {
 }
 
 export function applyBackgroundColor(screenName) {
-            if(screenName === 'profile')
+            if(screenName === 'profile'){
                 return {
                     backgroundColor: Color.THEME_COLOR,
                     flex: 1
                 };
-            else
+            }
+            else{
                 return {
                     backgroundColor: '#fff',
                     flex: 1
                 };
+            }
 }
 
 export function applyStatusBarColor(screenName) {

@@ -1,44 +1,50 @@
-import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import AsyncStorage from '@react-native-community/async-storage';
 import {
     View,
-    TouchableOpacity,
-    Image,
     Text,
-    ScrollView
+    Image
 } from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Placeholder from '../../utility/placeHolder';
 import {connect} from 'react-redux';
-import Input from '../../component/Input';
 import Styles from './styles';
 import Container from '../../component/Container';
-import Icons from '../../utility/icons';
 import PlaceHolder from '../../utility/placeHolder';
-// import {errorHandler} from '../../modules/errorHandler';
-// import {validate} from '../../utility/validator';
-// import { navigateToScreen, resetStack } from '../../utility/handleNavigation';
-// import { signIn } from '../../modules/signIn';
-// import { checkNullData } from '../../utility/helper';
-// import Constant from '../../utility/constant';
+import DataOptions from '../../utility/dataOptions';
+import { resetStack } from '../../utility/handleNavigation';
 
 
 class ProfileScreen extends Component {
     constructor() {
         super();
         this.state = {
-            profileData: {
-                name: 'Jone Doe'
-            }
+            profileData: DataOptions.USER_PROFILE
         };
 
     }
 
-
-    componentDidUpdate(prevProps) {
-
+    componentDidMount(){
+        const {navigation} = this.props;
+        navigation.setParams({
+            logOutPressed: this.logOutPressed,
+        });
     }
 
+    /**
+     * Method to handle the logout functionality
+     */
+    logOutPressed = () =>{
+        AsyncStorage.clear();
+        resetStack('LoginScreen');
+    };
+
+    /**
+     * Method to render to the profile details.
+     * @param value
+     * @param key
+     * @returns {*}
+     */
     renderDetailView = (value, key) => {
         return (
             <View style={Styles.detailView}>
@@ -53,7 +59,7 @@ class ProfileScreen extends Component {
     };
 
     render() {
-        const {profileData} = this.state;
+        const { profileData: { name, profileImageUrl, email, mobileNumber }} = this.state;
         const {fetching} = this.props;
         return (
             <Container
@@ -63,20 +69,21 @@ class ProfileScreen extends Component {
                 <View style={Styles.topSpacing}>
                     <View style={[Styles.profileBlock, Styles.boxShadowStyle]}>
                         <View style={Styles.imageBlock}>
-                            <View
+                            <Image
+                                source={{uri: profileImageUrl}}
                                 style={Styles.imageStyle}
                             />
                         </View>
                         <View style={Styles.commonMargin}>
-                            <Text style={Styles.nameTitleStyle}>{profileData.name}</Text>
+                            <Text style={Styles.nameTitleStyle}>{name}</Text>
                             {
-                                this.renderDetailView('name', Placeholder.USERNAME)
+                                this.renderDetailView(name, Placeholder.USERNAME)
                             }
                             {
-                                this.renderDetailView('2346736476', PlaceHolder.MOBILE_NUMBER)
+                                this.renderDetailView(mobileNumber, PlaceHolder.MOBILE_NUMBER)
                             }
                             {
-                                this.renderDetailView('vinanti.pansari@gmail.com', PlaceHolder.EMAIL)
+                                this.renderDetailView(email, PlaceHolder.EMAIL)
                             }
                         </View>
                         <View style={Styles.ButtonView}>
@@ -90,17 +97,12 @@ class ProfileScreen extends Component {
 }
 
 
-// ProfileScreen.propTypes = {
-//     dispatch: PropTypes.object,
-//     fetching: PropTypes.bool,
-// };
-// ProfileScreen.defaultProps = {
-//     dispatch: {},
-//     fetching: false,
-// };
+ProfileScreen.propTypes = {
+    fetching: PropTypes.bool,
+};
+ProfileScreen.defaultProps = {
+    fetching: false,
+};
 const mapStateToProps = state => ({
-    // fetching: state.signIn.fetching,
-    // signInPayload: state.signIn.signInPayload,
-    // userProfile: state.fetchUserProfile.userProfile
 });
 export default connect(mapStateToProps)(ProfileScreen);

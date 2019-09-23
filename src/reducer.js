@@ -4,6 +4,8 @@
 import { combineReducers } from 'redux';
 import { AppNavigator } from './navigators/Root';
 import fetchVideoList from './modules/fetchVideoList';
+import errorHandler from './modules/errorHandler';
+import signIn from './modules/signIn';
 /**
  *  Simply return the original `state` if `nextState` is null or undefined.
  * @param state
@@ -21,7 +23,9 @@ function nav(state, action) {
  */
 const AppReducer = combineReducers({
     nav,
-    fetchVideoList
+    fetchVideoList,
+    errorHandler,
+    signIn
 });
 
 export default AppReducer;
