@@ -3,13 +3,13 @@ phrase:
   project_id: eae8605abd55ee70612e421aa9176137
   push:
     sources:
-      - file: ./src/utils/Localization/Locale/<locale_name>.json
+      - file: ./src/utility/<locale_name>.json
         params:
           file_format: simple_json
           update_translations: true
   pull:
     targets:
-      - file: ./src/utils/Localization/Locale/<locale_name>.json
+      - file: ./src/utility/<locale_name>.json
         params:
           file_format: simple_json
 
